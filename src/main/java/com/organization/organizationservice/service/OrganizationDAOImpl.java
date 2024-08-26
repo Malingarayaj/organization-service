@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import com.organization.organizationservice.exception.AlreadyOrganizationExist;
 import com.organization.organizationservice.execption.organizationNotFound;
 import com.organization.organizationservice.repository.OrganizationAdminRepo;
 import com.organization.organizationservice.repository.OrganizationRepo;
+import com.organization.organizationservice.util.EmailService;
 
 @Service
 public class OrganizationDAOImpl implements OrganizationDAO {
@@ -28,13 +31,16 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 	
 	@Autowired
 	private OrganizationAdminRepo organizationAdminRepo;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public String createOrganization(OrgRequest request) throws AffiliationNumberAlreadyExist {
 		System.out.println("inside createOrganization method");
 		Organization entity = new Organization();
-		if (request.getOrgId() != null && request.getFaxNumber() != null && request.getAffiliationNumber() != null
-				&& request.getRecognizedBy() != null && request.getBoardOfEducation() != null) {
+		if (null!=request.getFaxNumber() && null!=request.getAffiliationNumber()
+				&& null!= request.getRecognizedBy() && null!=request.getBoardOfEducation()) {
 			Optional<Organization> orgExist = organizationRepo.findByOrgId(request.getOrgId());
 			if (orgExist.isPresent()) {
 				throw new AlreadyOrganizationExist();
@@ -48,19 +54,25 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 			entity.setPincode(request.getPincode());
 			entity.setRecognizedBy(request.getRecognizedBy());
 			entity.setOrgAddress(request.getOrgAddress());
+			entity.setEmail(request.getEmail());
 			Organization savedOrg = organizationRepo.save(entity);
-			if (savedOrg != null) {
+//			try {
+//		//		emailService.sendHtmlEmail(savedOrg.getEmail());
+//			} catch (MessagingException e) {
+//				e.printStackTrace();
+//			}
+			if (null!=savedOrg) {
 				return "success";
 			}
+			
 		}
-		return null;
+		return "failed data inseration";
 	}
 
 	@Override
 	public List<OrgRequest> getAllOrgnization() {
 		List<OrgRequest> dtos = new ArrayList<>();
-		List<Organization> entites = organizationRepo.findAll();
-		entites.forEach(s -> {
+	    organizationRepo.findAll().forEach(s -> {
 			OrgRequest res = new OrgRequest();
 			BeanUtils.copyProperties(s, res);
 			dtos.add(res);
@@ -70,8 +82,11 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 	}
 
 	@Override
-	public OrgRequest getOrgnizationById(String orgId) {
-		Optional<Organization> entity = organizationRepo.findByOrgId(orgId);
+	public OrgRequest getOrgnizationById(String orgId) throws organizationNotFound {
+		Optional<Organization> entity = organizationRepo.findById(orgId);
+		if(!entity.isPresent()) {
+			throw new organizationNotFound();
+		}
 		OrgRequest response = new OrgRequest();
 		Organization entityfromdb = entity.get();
 		BeanUtils.copyProperties(entityfromdb, response);
@@ -86,7 +101,13 @@ public class OrganizationDAOImpl implements OrganizationDAO {
 			throw new organizationNotFound();
 		}
 		Organization oldData = entity.get();
-		BeanUtils.copyProperties(request, oldData);
+	//	BeanUtils.copyProperties(request, oldData);
+		oldData.setAffiliationNumber(request.getAffiliationNumber());
+		oldData.setBoardOfEducation(request.getBoardOfEducation());
+		oldData.setFaxNumber(request.getFaxNumber());
+		oldData.setPincode(request.getPincode());
+		oldData.setOrgAddress(request.getOrgAddress());
+		oldData.setRecognizedBy(request.getRecognizedBy());
 		Organization newData = organizationRepo.save(oldData);
 		BeanUtils.copyProperties(newData, request);
 		return request;

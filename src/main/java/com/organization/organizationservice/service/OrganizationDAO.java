@@ -13,7 +13,7 @@ public interface OrganizationDAO {
 
 	List<OrgRequest> getAllOrgnization();
 
-	OrgRequest getOrgnizationById(String orgId);
+	OrgRequest getOrgnizationById(String orgId)throws organizationNotFound;
 
 	OrgRequest updateOrgById(OrgRequest request, String orgId)throws organizationNotFound;
 
