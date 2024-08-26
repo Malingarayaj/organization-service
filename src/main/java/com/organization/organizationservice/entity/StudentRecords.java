@@ -25,7 +25,7 @@ public class StudentRecords {
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	private long id;
+	private Long id;
 
 	private String rollNumber;
 

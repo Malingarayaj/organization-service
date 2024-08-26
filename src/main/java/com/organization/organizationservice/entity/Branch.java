@@ -33,7 +33,6 @@ import lombok.NonNull;
 public class Branch {
 	@Id @GeneratedValue(generator="branchIdGenerator")
 	@GenericGenerator(name="branchIdGenerator", strategy = "com.organization.organizationservice.entity.BranchGenerator")
-	
 	private String branchId;
 
 	@Column(name = "branchName")
@@ -94,8 +93,8 @@ public class Branch {
 	 * cascade=CascadeType.REMOVE) private List<FeesStructure> feesStructures = new
 	 * ArrayList<FeesStructure>();
 	 */
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "branch", cascade = CascadeType.REMOVE)
-//	private List<Faculty> faculties = new ArrayList<Faculty>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "branch", cascade = CascadeType.REMOVE)
+	private List<Faculty> faculties = new ArrayList<Faculty>();
 //
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "branch", cascade = CascadeType.REMOVE)
 //	private List<Vehicle> vehicles = new ArrayList<Vehicle>();

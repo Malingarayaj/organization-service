@@ -1,10 +1,14 @@
 package com.organization.organizationservice.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -44,12 +48,12 @@ public class ClassRoom {
 	@JoinColumn(name = "branchId",nullable = false)
 	private Branch branch;
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "facultyId")
-//	private Faculty faculty;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "facultyId",nullable = false)
+	private Faculty faculty;
 	
-	//private List<Subject>
-	
+	@ManyToMany(fetch = FetchType.LAZY)
+	private List<Student> studentLists = new ArrayList<Student>();	
 	
 
 }

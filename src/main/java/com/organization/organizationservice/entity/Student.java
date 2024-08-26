@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -84,6 +85,14 @@ public class Student {
 	@ManyToOne
 	@JoinColumn(name="branchId",nullable = false)
 	private Branch branch;
+	
+	@ManyToMany(fetch =FetchType.LAZY)
+	@JoinColumn(name = "classroomId")
+	private List<ClassRoom>  classRoom = new ArrayList<>();	
+	
+//	@ManyToOne
+//	@JoinColumn(name = "vehicleId",nullable = false)
+//	private Vehicle vehicle;
 	
 	
 	

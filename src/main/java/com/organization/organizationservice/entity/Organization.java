@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -36,6 +35,21 @@ public class Organization {
 	private String faxNumber;
 	private String recognizedBy;
 	private boolean isActive;
+	private String email;
+	
+	public Organization(String orgId,String orgName,String orgAddress,String pincode,String boardOfEducation,String affiliationNumber
+			,String faxNumber,String recognizedBy,boolean isActive,String email) {
+		this.orgId=orgId;
+		this.orgName=orgName;
+		this.orgAddress=orgAddress;
+		this.pincode=pincode;
+		this.boardOfEducation=boardOfEducation;
+		this.affiliationNumber=affiliationNumber;
+		this.faxNumber=faxNumber;
+		this.recognizedBy=recognizedBy;
+		this.isActive=isActive;
+		this.email=email;		
+	}
 	@OneToOne
 	private OrganizationAdmin organizationAdmin;
 	
