@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.organization.organizationservice.dto.OrgAdminDTO;
 import com.organization.organizationservice.dto.OrgRequest;
@@ -25,10 +26,10 @@ public class OrganizationController {
 	@Autowired
 	private OrganizationDAO organizationDAO;
 
-	@PostMapping("/save")
+	@PostMapping(value="/save")
 	public ResponseEntity<? extends Object> createOrganization(@RequestBody OrgRequest request)throws AffiliationNumberAlreadyExist {
 		String response = organizationDAO.createOrganization(request);
-		return ResponseEntity.ok(response);
+		return new ResponseEntity<Object>(response, null)
 	}
 
 	@GetMapping("/all")
@@ -37,8 +38,8 @@ public class OrganizationController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@GetMapping("/{orgId}")
-	public ResponseEntity<? extends Object> getOrgnizationById(@PathVariable String orgId) {
+	@GetMapping("{orgId}")
+	public ResponseEntity<? extends Object> getOrgnizationById(@RequestParam ("orgId") String orgId) throws organizationNotFound {
 		OrgRequest response = organizationDAO.getOrgnizationById(orgId);
 		return ResponseEntity.ok(response);
 	}

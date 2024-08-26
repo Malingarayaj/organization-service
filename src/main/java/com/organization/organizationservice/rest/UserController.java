@@ -25,7 +25,8 @@ public class UserController {
 	
 	@PostMapping("/save")
 	public ResponseEntity<? extends Object> createOgAdmin(@PathVariable String orgId,@RequestBody UserDTO request) throws organizationNotFound{
-		return new ResponseEntity<UserDTO>(userService.createOgAdmin(orgId,request),HttpStatus.CREATED);
+		//return new ResponseEntity<UserDTO>(userService.createOgAdmin(orgId,request),HttpStatus.CREATED);
+		return ResponseEntity.ok(userService.createOgAdmin(orgId,request));
 	}
 	
 
