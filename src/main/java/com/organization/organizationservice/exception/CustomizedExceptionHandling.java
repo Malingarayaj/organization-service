@@ -55,4 +55,33 @@ public class CustomizedExceptionHandling extends ResponseEntityExceptionHandler{
          ResponseEntity<Object> entity = new ResponseEntity<>(response, HttpStatus.FOUND);
          return entity;
      }
+	 
+	 @ExceptionHandler(StudentNotFound.class)
+     public ResponseEntity<Object> handleExceptions(StudentNotFound ex, WebRequest webRequest) {
+         ExceptionResponse response = new ExceptionResponse();
+         response.setDateTime(LocalDateTime.now());
+         response.setMessage("Student Not found found given by Id!!!");
+         ResponseEntity<Object> entity = new ResponseEntity<>(response, HttpStatus.FOUND);
+         return entity;
+     }
+	 
+	 @ExceptionHandler(StudentRecordAlreadyExist.class)
+     public ResponseEntity<Object> handleExceptions(StudentRecordAlreadyExist ex, WebRequest webRequest) {
+         ExceptionResponse response = new ExceptionResponse();
+         response.setDateTime(LocalDateTime.now());
+         response.setMessage("Student record already exsit !!!");
+         ResponseEntity<Object> entity = new ResponseEntity<>(response, HttpStatus.FOUND);
+         return entity;
+     }
+	 
+	 @ExceptionHandler(FacultyNotFoundException.class)
+     public ResponseEntity<Object> handleExceptions(FacultyNotFoundException ex, WebRequest webRequest) {
+         ExceptionResponse response = new ExceptionResponse();
+         response.setDateTime(LocalDateTime.now());
+         response.setMessage("Facutly is not exist given Id !!!");
+         ResponseEntity<Object> entity = new ResponseEntity<>(response, HttpStatus.FOUND);
+         return entity;
+     }
+	 
+	 
 }
